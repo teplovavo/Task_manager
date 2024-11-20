@@ -21,8 +21,10 @@ mongoose
   });
 
 // Routes
-const taskRoutes = require('./routes/tasks');
+const taskRoutes = require('./routes/tasks'); // Import task routes
+const authRoutes = require('./routes/auth'); // Import auth routes
 app.use('/api/tasks', taskRoutes); // Use the task routes
+app.use('/api/auth', authRoutes); // Use auth routes
 
 // Server start
 app.listen(PORT, () => {

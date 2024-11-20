@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Task from '../components/Task';
 import axios from 'axios';
+import moment from 'moment'; // For date formatting
 
 function Tasks() {
   const [tasks, setTasks] = useState([]);
@@ -10,6 +11,7 @@ function Tasks() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
+         // GET request to fetch tasks
         const response = await axios.get('http://localhost:3000/api/tasks');
         setTasks(response.data);
         console.log('Fetched tasks:', response.data);
@@ -21,10 +23,15 @@ function Tasks() {
     fetchTasks();
   }, []);
 
+  // Function to add a new task
   const addTask = async () => {
     if (newTask.trim() !== '') {
       try {
-        const response = await axios.post('http://localhost:3000/api/tasks', { description: newTask });
+        const newTaskData = {
+          description: newTask,
+          dueDate: null, // You can add functionality to set due date
+        };
+        const response = await axios.post('http://localhost:3000/api/tasks', newTaskData);
         setTasks([...tasks, response.data]);
         setNewTask('');
         console.log('Added task:', response.data);
@@ -33,6 +40,18 @@ function Tasks() {
       }
     }
   };
+
+  // Function to edit a task
+  const editTask = async (id, updatedData) => {
+    try {
+      const response = await axios.put(`http://localhost:3000/api/tasks/${id}`, updatedData);
+      setTasks(tasks.map((task) => (task._id === id ? response.data : task)));
+      console.log('Edited task:', response.data);
+    } catch (error) {
+      console.error('Error editing task:', error);
+    }
+  };
+
 
   const deleteTask = async (id) => {
     try {

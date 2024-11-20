@@ -1,4 +1,4 @@
-
+// backend/models/Task.js
 const mongoose = require('mongoose');
 
 // Define a schema for the Task model
@@ -13,6 +13,15 @@ const taskSchema = new mongoose.Schema({
   completed: {
     type: Boolean,
     default: false,
+  },
+  // Date and time when the task was created
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  // Due date for the task
+  dueDate: {
+    type: Date,
   },
 }, {
   timestamps: true, // Adds createdAt and updatedAt fields
