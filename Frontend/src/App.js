@@ -1,52 +1,36 @@
-
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Tasks from './pages/Tasks';
 import News from './pages/News';
 import Login from './pages/Login';
 
 function App() {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [currentPage, setCurrentPage] = useState('Home'); // Track current page
 
-  // Check localStorage for authentication status on mount
+  // Log the current page whenever it changes
   useEffect(() => {
-    const loggedIn = localStorage.getItem('authenticated');
-    if (loggedIn) {
-      setAuthenticated(true);
-    }
-  }, []);
-
-  // Update localStorage when authenticated state changes
-  useEffect(() => {
-    if (authenticated) {
-      localStorage.setItem('authenticated', true);
-    } else {
-      localStorage.removeItem('authenticated');
-    }
-  }, [authenticated]);
+    console.log(`Current page is: ${currentPage}`);
+  }, [currentPage]);
 
   return (
     <BrowserRouter>
       <div className="App">
         {/* Navigation menu */}
         <nav>
-          <Link to="/">Home</Link> | <Link to="/tasks">Tasks</Link> | <Link to="/news">News</Link> | <Link to="/login">Login</Link>
+          <Link to="/" onClick={() => setCurrentPage('Home')}>Home</Link> |{' '}
+          <Link to="/tasks" onClick={() => setCurrentPage('Tasks')}>Tasks</Link> |{' '}
+          <Link to="/news" onClick={() => setCurrentPage('News')}>News</Link> |{' '}
+          <Link to="/login" onClick={() => setCurrentPage('Login')}>Login</Link>
         </nav>
 
         {/* Define routes */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/tasks"
-            element={authenticated ? <Tasks /> : <Navigate to="/tasks" />}
-          />
+          <Route path="/tasks" element={<Tasks />} />
           <Route path="/news" element={<News />} />
-          <Route
-            path="/login"
-            element={<Login setAuthenticated={setAuthenticated} />}
-          />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -13,7 +13,7 @@ function Tasks() {
       try {
         // GET request to fetch tasks
         const response = await axios.get('http://localhost:3000/api/tasks');
-        setTasks(response.data);
+        setTasks(response.data); // Update tasks state
         console.log('Fetched tasks:', response.data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
