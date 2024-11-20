@@ -23,12 +23,13 @@ function Login() {
     return true;
   };
 
-  // Function to handle login
+  // Function to handle login or user creation
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateInput()) return;
 
     try {
+      // Try logging in the user
       const response = await axios.post('http://localhost:3000/api/auth/login', {
         username,
         password,
@@ -36,12 +37,27 @@ function Login() {
 
       console.log('Login successful:', response.data);
       setGreeting(`Hello, ${username}!`);
-      setUsername('');
-      setPassword('');
-      fetchUsers(); // Fetch users after login
+      fetchUsers(); // Fetch updated users
     } catch (error) {
-      console.error('Error logging in:', error);
-      setError('User not found or invalid credentials');
+      if (error.response && error.response.status === 400) {
+        // User not found, create a new user
+        console.log('User not found. Creating new user...');
+        try {
+          const createResponse = await axios.post('http://localhost:3000/api/users', {
+            username,
+            password,
+          });
+          console.log('User created:', createResponse.data);
+          setGreeting(`Welcome, ${username}!`);
+          fetchUsers(); // Fetch updated users
+        } catch (createError) {
+          console.error('Error creating user:', createError);
+          setError('Failed to create user. Please try again.');
+        }
+      } else {
+        console.error('Error logging in:', error);
+        setError('An unexpected error occurred. Please try again.');
+      }
     }
   };
 
@@ -53,17 +69,6 @@ function Login() {
       console.log('Fetched users:', response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
-    }
-  };
-
-  // Delete a user
-  const deleteUser = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3000/api/users/${id}`);
-      console.log('Deleted user:', id);
-      fetchUsers();
-    } catch (error) {
-      console.error('Error deleting user:', error);
     }
   };
 
@@ -94,7 +99,6 @@ function Login() {
         {users.map((user) => (
           <li key={user._id}>
             {user.username}
-            <button onClick={() => deleteUser(user._id)}>Delete</button>
           </li>
         ))}
       </ul>
