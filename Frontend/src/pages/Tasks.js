@@ -1,7 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import Task from '../components/Task';
 import axios from 'axios';
-import moment from 'moment'; // For date formatting
 
 function Tasks() {
   const [tasks, setTasks] = useState([]);
@@ -11,7 +11,7 @@ function Tasks() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-         // GET request to fetch tasks
+        // GET request to fetch tasks
         const response = await axios.get('http://localhost:3000/api/tasks');
         setTasks(response.data);
         console.log('Fetched tasks:', response.data);
@@ -52,7 +52,6 @@ function Tasks() {
     }
   };
 
-
   const deleteTask = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/api/tasks/${id}`);
@@ -80,6 +79,7 @@ function Tasks() {
             key={task._id}
             task={task}
             deleteTask={() => deleteTask(task._id)}
+            editTask={editTask} // Pass editTask function to Task component
           />
         ))}
       </ul>

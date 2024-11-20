@@ -1,4 +1,4 @@
-// frontend/src/pages/Login.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -20,7 +20,12 @@ function Login({ setAuthenticated }) {
       setAuthenticated(true); // Update authenticated state
     } catch (error) {
       console.error('Error logging in:', error);
-      setError('Invalid credentials');
+      // Display specific error message from backend
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('An error occurred. Please try again later.');
+      }
     }
   };
 

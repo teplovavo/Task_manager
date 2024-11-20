@@ -28,12 +28,7 @@ function App() {
   }, [authenticated]);
 
   return (
-    <BrowserRouter
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatRoutes: true,
-      }}
-    >
+    <BrowserRouter>
       <div className="App">
         {/* Navigation menu */}
         <nav>
@@ -45,7 +40,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/tasks"
-            element={authenticated ? <Tasks /> : <Navigate to="/login" />}
+            element={authenticated ? <Tasks /> : <Navigate to="/tasks" />}
           />
           <Route path="/news" element={<News />} />
           <Route

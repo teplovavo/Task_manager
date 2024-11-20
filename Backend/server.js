@@ -23,8 +23,10 @@ mongoose
 // Routes
 const taskRoutes = require('./routes/tasks'); // Import task routes
 const authRoutes = require('./routes/auth'); // Import auth routes
+
 app.use('/api/tasks', taskRoutes); // Use the task routes
 app.use('/api/auth', authRoutes); // Use auth routes
+app.use(cors()); // Enable CORS for all routes
 
 // Server start
 app.listen(PORT, () => {

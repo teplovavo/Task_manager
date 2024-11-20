@@ -1,5 +1,3 @@
-
-
 /* General styles */
 body {
   margin: 0;
@@ -60,6 +58,11 @@ li {
   width: 300px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+li div {
+  display: flex;
   align-items: center;
 }
 

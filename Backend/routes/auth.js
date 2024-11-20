@@ -1,8 +1,8 @@
-// backend/routes/auth.js
+
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); //password hashing
 
 // Register a new user
 router.post('/register', async (req, res) => {
@@ -23,14 +23,16 @@ router.post('/login', async (req, res) => {
     // Find user by username
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      // If user not found, send specific error message
+      return res.status(400).json({ error: 'User not found' });
     }
     // Compare passwords
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (isMatch) {
       res.json({ message: 'Login successful' });
     } else {
-      res.status(400).json({ error: 'Invalid credentials' });
+      // If password is incorrect, send specific error message
+      res.status(400).json({ error: 'Incorrect password' });
     }
   } catch (error) {
     console.error('Error logging in:', error);

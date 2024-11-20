@@ -1,6 +1,6 @@
-// backend/models/User.js
+
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt'); //password hashing
+const bcrypt = require('bcrypt'); // Password hashing
 
 // Define user schema
 const userSchema = new mongoose.Schema({
