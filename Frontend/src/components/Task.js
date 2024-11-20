@@ -1,19 +1,12 @@
-
-
 import React from 'react';
 
-// deleting task ///////////////
+// Component to display a task
 function Task({ task, deleteTask }) {
   return (
     <li>
-
-
-      {task}
+      {task.description}
       {/* Button to delete the task */}
       <button onClick={deleteTask}>Delete</button>
-
-
-
     </li>
   );
 }

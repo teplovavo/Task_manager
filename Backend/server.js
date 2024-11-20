@@ -1,11 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); // For handling CORS
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// connecting MongoDB
+// Middleware
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON bodies
+
+// Connecting MongoDB
 mongoose
   .connect(process.env.ATLAS_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -15,10 +20,11 @@ mongoose
     console.error('Error connecting to MongoDB Atlas:', error);
   });
 
-// middleware and routes
-app.use(express.json());
+// Routes
+const taskRoutes = require('./routes/tasks');
+app.use('/api/tasks', taskRoutes); // Use the task routes
 
-// server start
+// Server start
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
