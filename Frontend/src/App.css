@@ -80,3 +80,38 @@ form {
 .error {
   color: red;
 }
+
+
+
+/* Login page styling */
+form {
+  margin: 20px auto;
+  padding: 20px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+form input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+

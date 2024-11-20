@@ -28,6 +28,12 @@ app.use('/api/tasks', taskRoutes); // Use the task routes
 app.use('/api/auth', authRoutes); // Use auth routes
 app.use(cors()); // Enable CORS for all routes
 
+// Import user routes
+const userRoutes = require('./routes/users');
+app.use('/api/users', userRoutes);
+
+
+
 // Server start
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
