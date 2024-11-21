@@ -65,4 +65,22 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Update task completion status
+router.patch('/:id/completed', async (req, res) => {
+  try {
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      { completed: req.body.completed },
+      { new: true } // Return the updated document
+    );
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    res.json(task);
+  } catch (error) {
+    console.error('Error updating task status:', error);
+    res.status(500).json({ error: 'Failed to update task status' });
+  }
+});
+
 module.exports = router;

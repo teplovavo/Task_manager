@@ -7,27 +7,27 @@ function Login() {
   const [error, setError] = useState('');
   const [greeting, setGreeting] = useState(null);
   const [users, setUsers] = useState([]);
-  const [editingUserId, setEditingUserId] = useState(null); // Track user being edited
+  const [editingUserId, setEditingUserId] = useState(null);
   const [editUsername, setEditUsername] = useState('');
   const [editPassword, setEditPassword] = useState('');
 
-  // Fetch users on component mount
+  // Fetch users when component mounts
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // Fetch users from the database
+  // Fetch users from the backend
   const fetchUsers = async () => {
     try {
       const response = await axios.get('http://localhost:3000/api/users');
-      setUsers(response.data);
+      setUsers(response.data); // Update users list
       console.log('Fetched users:', response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
   };
 
-  // Validate input
+  // Validate user input
   const validateInput = () => {
     const usernameRegex = /^[a-zA-Z]+$/;
     if (!usernameRegex.test(username)) {
@@ -42,47 +42,41 @@ function Login() {
     return true;
   };
 
-  // Handle login or user creation
+  // Handle user login or creation
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateInput()) return;
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', {
+      await axios.post('http://localhost:3000/api/auth/login', {
         username,
         password,
       });
-      console.log('Login successful:', response.data);
       setGreeting(`Hello, ${username}!`);
-      fetchUsers();
+      fetchUsers(); // Refresh users list
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        console.log('Creating new user...');
+      if (error.response?.status === 400) {
         try {
-          const createResponse = await axios.post('http://localhost:3000/api/users', {
+          await axios.post('http://localhost:3000/api/users', {
             username,
             password,
           });
-          console.log('User created:', createResponse.data);
           setGreeting(`Welcome, ${username}!`);
-          fetchUsers();
+          fetchUsers(); // Refresh users list
         } catch (createError) {
-          console.error('Error creating user:', createError);
           setError('Failed to create user. Please try again.');
         }
       } else {
-        console.error('Error logging in:', error);
         setError('An unexpected error occurred. Please try again.');
       }
     }
   };
 
-  // Handle delete user
+  // Delete a user
   const deleteUser = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/api/users/${id}`);
-      console.log('Deleted user:', id);
-      fetchUsers();
+      fetchUsers(); // Refresh users list
     } catch (error) {
       console.error('Error deleting user:', error);
     }
@@ -92,69 +86,73 @@ function Login() {
   const startEditing = (user) => {
     setEditingUserId(user._id);
     setEditUsername(user.username);
-    setEditPassword('');
+    setEditPassword(''); // Clear password field
   };
 
-  // Handle updating a user
+  // Update user information
   const updateUser = async (id) => {
     try {
       await axios.put(`http://localhost:3000/api/users/${id}`, {
         username: editUsername,
         password: editPassword,
       });
-      console.log('Updated user:', id);
-      setEditingUserId(null);
-      fetchUsers();
+      setEditingUserId(null); // Exit editing mode
+      fetchUsers(); // Refresh users list
     } catch (error) {
       console.error('Error updating user:', error);
     }
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
+        {/* Username field */}
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-        /><br /><br />
+        />
+        {/* Password field */}
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        /><br /><br />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        />
+        {/* Display error message */}
+        {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
       </form>
-
+      {/* Greeting */}
       {greeting && <h3>{greeting}</h3>}
-
       <h3>Users List</h3>
-      <ul>
+      <ul className="user-list">
         {users.map((user) => (
           <li key={user._id}>
             {editingUserId === user._id ? (
               <>
+                {/* Edit username */}
                 <input
                   type="text"
                   value={editUsername}
                   onChange={(e) => setEditUsername(e.target.value)}
                 />
+                {/* Edit password */}
                 <input
                   type="password"
                   placeholder="New password (optional)"
                   value={editPassword}
                   onChange={(e) => setEditPassword(e.target.value)}
                 />
+                {/* Save and cancel buttons */}
                 <button onClick={() => updateUser(user._id)}>Save</button>
                 <button onClick={() => setEditingUserId(null)}>Cancel</button>
               </>
             ) : (
               <>
-                {user.username}
+                <span>{user.username}</span>
                 <button onClick={() => startEditing(user)}>Edit</button>
                 <button onClick={() => deleteUser(user._id)}>Delete</button>
               </>
