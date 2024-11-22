@@ -1,6 +1,6 @@
+// src/pages/Login.js
 
-
-import React, { useState, useEffect } from 'react'; // Import React and useState
+import React, { useState, useEffect } from 'react'; // Import React and hooks
 import axios from 'axios'; // Import axios for making HTTP requests
 
 function Login() {
@@ -16,6 +16,9 @@ function Login() {
   const [editUsername, setEditUsername] = useState('');
   const [editPassword, setEditPassword] = useState('');
 
+  // Define backend URL
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
+
   // Fetch users when the component mounts
   useEffect(() => {
     fetchUsers();
@@ -24,7 +27,7 @@ function Login() {
   // Function to fetch users from the backend
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/users');
+      const response = await axios.get(`${backendUrl}/api/users`);
       setUsers(response.data); // Update the users state
       console.log('Fetched users:', response.data);
     } catch (error) {
@@ -54,7 +57,7 @@ function Login() {
 
     try {
       // Attempt to log in the user
-      await axios.post('http://localhost:3000/api/auth/login', {
+      await axios.post(`${backendUrl}/api/auth/login`, {
         username,
         password,
       });
@@ -64,7 +67,7 @@ function Login() {
       if (error.response?.status === 400) {
         // If login fails, attempt to create a new user
         try {
-          await axios.post('http://localhost:3000/api/users', {
+          await axios.post(`${backendUrl}/api/users`, {
             username,
             password,
           });
@@ -82,7 +85,7 @@ function Login() {
   // Function to delete a user
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/users/${id}`);
+      await axios.delete(`${backendUrl}/api/users/${id}`);
       fetchUsers(); // Refresh the users list
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -99,7 +102,7 @@ function Login() {
   // Function to update a user's information
   const updateUser = async (id) => {
     try {
-      await axios.put(`http://localhost:3000/api/users/${id}`, {
+      await axios.put(`${backendUrl}/api/users/${id}`, {
         username: editUsername,
         password: editPassword,
       });

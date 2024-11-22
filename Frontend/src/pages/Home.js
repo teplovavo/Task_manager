@@ -1,14 +1,15 @@
 
 
-import React, { useState, useEffect } from 'react'; // Import React and useState
+import React, { useState, useEffect } from 'react'; // Import React and hooks
 import axios from 'axios'; // Import axios for making HTTP requests
 
-
-// function to render the home page
 function Home() {
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
   const [articles, setArticles] = useState([]);
+
+  // Define backend URL
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
 
   // Fetch data when component mounts
   useEffect(() => {
@@ -20,7 +21,7 @@ function Home() {
   // Fetch tasks from the backend
   const fetchTasks = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/tasks');
+      const response = await axios.get(`${backendUrl}/api/tasks`);
       setTasks(response.data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
@@ -30,7 +31,7 @@ function Home() {
   // Fetch users from the backend
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/users');
+      const response = await axios.get(`${backendUrl}/api/users`);
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);

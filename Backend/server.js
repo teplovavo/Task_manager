@@ -1,15 +1,20 @@
-
+// backend/server.js
 
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors'); // For handling CORS
+const cors = require('cors'); // Import cors once
 const app = express(); // Create Express app
 
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors()); // Enable CORS for all routes
+
+// Enable CORS with specified origins
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://teplova-task-manager.netlify.app']
+}));
+
 app.use(express.json()); // Parse JSON bodies
 
 // Connecting to MongoDB
@@ -35,10 +40,3 @@ app.use('/api/users', userRoutes); // Use user routes
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-// Enable CORS to deploy
-const cors = require('cors');
-
-app.use(cors({
-  origin: ['http://localhost:3000', 'https://teplova-task-manager.netlify.app']
-}));

@@ -1,6 +1,5 @@
 
-
-import React, { useState, useEffect } from 'react'; // Import React and useState
+import React, { useState, useEffect } from 'react'; // Import React and hooks
 import axios from 'axios'; // Import axios for making HTTP requests
 import Task from '../components/Task'; // Import the Task component
 
@@ -8,6 +7,9 @@ function Tasks() {
   const [tasks, setTasks] = useState([]); // List of tasks
   const [newTask, setNewTask] = useState(''); // New task description
   const [dueDate, setDueDate] = useState(''); // Due date
+
+  // Define backend URL
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
 
   // Fetch tasks when the component mounts
   useEffect(() => {
@@ -17,7 +19,7 @@ function Tasks() {
   // Fetch tasks from the server
   const fetchTasks = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/tasks');
+      const response = await axios.get(`${backendUrl}/api/tasks`);
       setTasks(response.data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
@@ -33,7 +35,7 @@ function Tasks() {
           completed: false,
           dueDate: dueDate ? new Date(dueDate) : null,
         };
-        const response = await axios.post('http://localhost:3000/api/tasks', newTaskData);
+        const response = await axios.post(`${backendUrl}/api/tasks`, newTaskData);
         setTasks([...tasks, response.data]);
         setNewTask('');
         setDueDate('');
@@ -46,7 +48,7 @@ function Tasks() {
   // Toggle task completion
   const toggleCompletion = async (id, completed) => {
     try {
-      const response = await axios.patch(`http://localhost:3000/api/tasks/${id}/completed`, {
+      const response = await axios.patch(`${backendUrl}/api/tasks/${id}/completed`, {
         completed,
       });
       setTasks(tasks.map((task) => (task._id === id ? response.data : task)));
@@ -58,7 +60,7 @@ function Tasks() {
   // Delete a task
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/tasks/${id}`);
+      await axios.delete(`${backendUrl}/api/tasks/${id}`);
       setTasks(tasks.filter((task) => task._id !== id));
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -68,7 +70,7 @@ function Tasks() {
   // Edit a task
   const editTask = async (id, updatedData) => {
     try {
-      const response = await axios.put(`http://localhost:3000/api/tasks/${id}`, updatedData);
+      const response = await axios.put(`${backendUrl}/api/tasks/${id}`, updatedData);
       setTasks(tasks.map((task) => (task._id === id ? response.data : task)));
     } catch (error) {
       console.error('Error editing task:', error);
