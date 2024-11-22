@@ -1,14 +1,22 @@
+// backend/routes/users.js
+
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const bcrypt = require('bcrypt'); // password hashing
+const bcrypt = require('bcrypt'); // For password hashing
 
-// Create a user
+// Create a new user
 router.post('/', async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-    res.status(201).json(user);
+    // Check if a user with the same username already exists
+    const existingUser = await User.findOne({ username: req.body.username });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
+    const user = new User(req.body); // Create a new user
+    await user.save(); // Save to the database
+    res.status(201).json(user); // Return the created user
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Failed to create user' });
@@ -18,8 +26,8 @@ router.post('/', async (req, res) => {
 // Get all users
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find();
-    res.json(users);
+    const users = await User.find({}, 'username'); // Get only usernames
+    res.json(users); // Return the list of users
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).json({ error: 'Failed to fetch users' });
@@ -29,11 +37,11 @@ router.get('/', async (req, res) => {
 // Delete a user
 router.delete('/:id', async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findByIdAndDelete(req.params.id); // Delete user by ID
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.json({ message: 'User deleted' });
+    res.json({ message: 'User deleted' }); // Confirm deletion
   } catch (error) {
     console.error('Error deleting user:', error);
     res.status(500).json({ error: 'Failed to delete user' });
@@ -45,7 +53,7 @@ router.put('/:id', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // Create an object to store updated fields
+    // Object to hold updated fields
     const updateData = { username };
 
     // Hash the password if provided
@@ -60,7 +68,7 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json(user);
+    res.json(user); // Return the updated user
   } catch (error) {
     console.error('Error updating user:', error);
     res.status(500).json({ error: 'Failed to update user' });

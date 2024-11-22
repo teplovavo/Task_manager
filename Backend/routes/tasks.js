@@ -1,13 +1,17 @@
+// backend/routes/tasks.js
 
 const express = require('express');
-const router = express.Router();
-const Task = require('../models/Task');
+const router = express.Router(); // Initialize the router
+const Task = require('../models/Task'); // Import the Task model
 
 // Create a new task
 router.post('/', async (req, res) => {
   try {
-    // Create a new task with the provided description
-    const task = new Task({ description: req.body.description });
+    // Create a new task with the provided description and due date
+    const task = new Task({
+      description: req.body.description,
+      dueDate: req.body.dueDate ? new Date(req.body.dueDate) : null, // Include due date
+    });
     // Save the task to the database
     await task.save();
     // Respond with the created task
@@ -83,4 +87,4 @@ router.patch('/:id/completed', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = router; // Export the router

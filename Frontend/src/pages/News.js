@@ -1,8 +1,11 @@
+// src/pages/News.js
+
 import React, { useState, useEffect } from 'react';
 
 function News() {
   const [articles, setArticles] = useState([]);
 
+  // Fetch news on component mount
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -21,20 +24,22 @@ function News() {
   }, []);
 
   return (
-    <div className="news-container">
+    <div className="news-page">
       <h2>Latest News</h2>
-      {articles.length > 0 ? (
-        articles.map((article, index) => (
-          <div key={index} className="news-item">
-            <a href={article.url} target="_blank" rel="noopener noreferrer">
-              <h4>{article.title}</h4>
-            </a>
-            <p>{article.description}</p>
-          </div>
-        ))
-      ) : (
-        <p>Loading news...</p>
-      )}
+      <div className="news-container">
+        {articles.length > 0 ? (
+          articles.map((article, index) => (
+            <div key={index} className="news-item">
+              <a href={article.url} target="_blank" rel="noopener noreferrer">
+                <h4 className="news-title">{article.title}</h4>
+              </a>
+              <p>{article.description}</p>
+            </div>
+          ))
+        ) : (
+          <p>Loading news...</p>
+        )}
+      </div>
     </div>
   );
 }

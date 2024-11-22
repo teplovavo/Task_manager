@@ -1,58 +1,77 @@
+// src/pages/Tasks.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Task from '../components/Task'; // Import the Task component
 
 function Tasks() {
-  const [tasks, setTasks] = useState([]); // State for storing tasks
-  const [newTask, setNewTask] = useState(''); // State for the new task input
+  const [tasks, setTasks] = useState([]); // List of tasks
+  const [newTask, setNewTask] = useState(''); // New task description
+  const [dueDate, setDueDate] = useState(''); // Due date
 
-  // Fetch tasks from the server when the component mounts
+  // Fetch tasks when the component mounts
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/tasks'); // GET request to fetch tasks
-        setTasks(response.data); // Update the state with the fetched tasks
-      } catch (error) {
-        console.error('Error fetching tasks:', error); // Log errors to the console
-      }
-    };
-
     fetchTasks();
   }, []);
 
-  // Add a new task to the server and update the state
+  // Fetch tasks from the server
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/tasks');
+      setTasks(response.data);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  // Add a new task
   const addTask = async () => {
     if (newTask.trim() !== '') {
       try {
-        const newTaskData = { description: newTask, completed: false }; // Prepare the new task data
-        const response = await axios.post('http://localhost:3000/api/tasks', newTaskData); // POST request to add a task
-        setTasks([...tasks, response.data]); // Add the new task to the state
-        setNewTask(''); // Clear the input field
+        const newTaskData = {
+          description: newTask,
+          completed: false,
+          dueDate: dueDate ? new Date(dueDate) : null,
+        };
+        const response = await axios.post('http://localhost:3000/api/tasks', newTaskData);
+        setTasks([...tasks, response.data]);
+        setNewTask('');
+        setDueDate('');
       } catch (error) {
-        console.error('Error adding task:', error); // Log errors to the console
+        console.error('Error adding task:', error);
       }
     }
   };
 
-  // Toggle the completion status of a task
+  // Toggle task completion
   const toggleCompletion = async (id, completed) => {
     try {
       const response = await axios.patch(`http://localhost:3000/api/tasks/${id}/completed`, {
         completed,
-      }); // PATCH request to update task completion
-      setTasks(tasks.map((task) => (task._id === id ? response.data : task))); // Update the task in the state
+      });
+      setTasks(tasks.map((task) => (task._id === id ? response.data : task)));
     } catch (error) {
-      console.error('Error toggling task completion:', error); // Log errors to the console
+      console.error('Error toggling task completion:', error);
     }
   };
 
-  // Delete a task from the server and update the state
+  // Delete a task
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/tasks/${id}`); // DELETE request to remove the task
-      setTasks(tasks.filter((task) => task._id !== id)); // Remove the task from the state
+      await axios.delete(`http://localhost:3000/api/tasks/${id}`);
+      setTasks(tasks.filter((task) => task._id !== id));
     } catch (error) {
-      console.error('Error deleting task:', error); // Log errors to the console
+      console.error('Error deleting task:', error);
+    }
+  };
+
+  // Edit a task
+  const editTask = async (id, updatedData) => {
+    try {
+      const response = await axios.put(`http://localhost:3000/api/tasks/${id}`, updatedData);
+      setTasks(tasks.map((task) => (task._id === id ? response.data : task)));
+    } catch (error) {
+      console.error('Error editing task:', error);
     }
   };
 
@@ -60,38 +79,49 @@ function Tasks() {
     <div className="container">
       <h1>Task Manager</h1>
 
-      {/* Input field and button for adding a new task */}
-      <div>
+      {/* Add Task Section */}
+      <div className="add-task-section">
         <input
           type="text"
           placeholder="Enter a new task..."
           value={newTask}
-          onChange={(e) => setNewTask(e.target.value)} // Update the new task state
+          onChange={(e) => setNewTask(e.target.value)}
+        />
+        <input
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+          style={{ width: '200px' }}
         />
         <button onClick={addTask}>Add Task</button>
       </div>
 
-      {/* Table for displaying tasks */}
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Task</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map((task) => (
-              <Task
-                key={task._id} // Unique key for each task
-                task={task} // Pass the task data
-                toggleCompletion={toggleCompletion} // Pass the toggleCompletion function
-                deleteTask={deleteTask} // Pass the deleteTask function
-              />
-            ))}
-          </tbody>
-        </table>
+      {/* Space between sections */}
+      <div style={{ marginTop: '20px' }}>
+        {/* Tasks Table */}
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tasks.map((task) => (
+                <Task
+                  key={task._id}
+                  task={task}
+                  toggleCompletion={toggleCompletion}
+                  deleteTask={deleteTask}
+                  editTask={editTask}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

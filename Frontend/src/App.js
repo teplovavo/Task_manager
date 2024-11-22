@@ -1,13 +1,15 @@
+// src/App.js
+
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
 import Home from './pages/Home';
 import Tasks from './pages/Tasks';
 import News from './pages/News';
 import Login from './pages/Login';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('Home'); // Track current page
+  const [currentPage, setCurrentPage] = useState('Home'); // Keep track of the current page
 
   // Log the current page whenever it changes
   useEffect(() => {
@@ -17,21 +19,48 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        {/* Navigation menu */}
-        <nav>
-          <Link to="/" onClick={() => setCurrentPage('Home')}>Home</Link> |{' '}
-          <Link to="/tasks" onClick={() => setCurrentPage('Tasks')}>Tasks</Link> |{' '}
-          <Link to="/news" onClick={() => setCurrentPage('News')}>News</Link> |{' '}
-          <Link to="/login" onClick={() => setCurrentPage('Login')}>Login</Link>
+        {/* Navigation Menu */}
+        <nav className="navigation">
+          <NavLink
+            to="/"
+            exact="true"
+            onClick={() => setCurrentPage('Home')}
+            activeClassName="active-link"
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/tasks"
+            onClick={() => setCurrentPage('Tasks')}
+            activeClassName="active-link"
+          >
+            Tasks
+          </NavLink>
+          <NavLink
+            to="/news"
+            onClick={() => setCurrentPage('News')}
+            activeClassName="active-link"
+          >
+            News
+          </NavLink>
+          <NavLink
+            to="/login"
+            onClick={() => setCurrentPage('Login')}
+            activeClassName="active-link"
+          >
+            Login
+          </NavLink>
         </nav>
 
-        {/* Define routes */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        {/* Define Routes */}
+        <div style={{ padding: '20px' }}>
+          <Routes>
+            <Route path="/" element={<Home />} exact="true" />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
   );
