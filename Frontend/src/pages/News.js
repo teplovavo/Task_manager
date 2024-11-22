@@ -1,17 +1,16 @@
-
+// src/pages/News.js
 
 import React, { useState, useEffect } from 'react';
 
 function News() {
+  // State hook for articles
   const [articles, setArticles] = useState([]);
 
-  
-
-  // Fetch news on component mount
+  // Fetch news articles from the external API
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const apiKey = process.env.REACT_APP_API_KEY; 
+        const apiKey = process.env.REACT_APP_API_KEY;
         const response = await fetch(
           `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`
         );
@@ -23,7 +22,7 @@ function News() {
     };
 
     fetchNews();
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
 
   return (
     <div className="news-page">

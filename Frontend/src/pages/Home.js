@@ -1,45 +1,39 @@
+// src/pages/Home.js
 
-
-import React, { useState, useEffect } from 'react'; // Import React and hooks
-import axios from 'axios'; // Import axios for making HTTP requests
+import React, { useState, useEffect, useCallback } from 'react'; // Import useCallback
+import axios from 'axios'; // Import axios for HTTP requests
 
 function Home() {
+  // State hooks for tasks, users, and articles
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
   const [articles, setArticles] = useState([]);
 
-  // Define backend URL
+  // Define the backend URL, using environment variable or localhost
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
 
-  // Fetch data when component mounts
-  useEffect(() => {
-    fetchTasks();
-    fetchUsers();
-    fetchNews();
-  }, []);
-
   // Fetch tasks from the backend
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/tasks`);
       setTasks(response.data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
-  };
+  }, [backendUrl]); // Include backendUrl as a dependency
 
   // Fetch users from the backend
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/users`);
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
-  };
+  }, [backendUrl]); // Include backendUrl as a dependency
 
-  // Fetch news articles
-  const fetchNews = async () => {
+  // Fetch news articles from the external API
+  const fetchNews = useCallback(async () => {
     try {
       const apiKey = process.env.REACT_APP_API_KEY;
       const response = await axios.get(
@@ -49,9 +43,16 @@ function Home() {
     } catch (error) {
       console.error('Error fetching news:', error);
     }
-  };
+  }, []); // No dependencies needed here
 
-  // Separate tasks into completed and in progress
+  // useEffect to fetch data when the component mounts
+  useEffect(() => {
+    fetchTasks();
+    fetchUsers();
+    fetchNews();
+  }, [fetchTasks, fetchUsers, fetchNews]); // Include functions as dependencies
+
+  // Separate tasks into completed and in-progress
   const completedTasks = tasks.filter((task) => task.completed);
   const inProgressTasks = tasks.filter((task) => !task.completed);
 
@@ -95,11 +96,7 @@ function Home() {
           <ul>
             {articles.slice(0, 5).map((article, index) => (
               <li key={index}>
-                <a
-                  href={article.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={article.url} target="_blank" rel="noopener noreferrer">
                   {article.title}
                 </a>
               </li>

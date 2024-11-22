@@ -12,14 +12,14 @@ const PORT = process.env.PORT || 3000;
 
 // Enable CORS with specified origins
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://teplova-task-manager.netlify.app']
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://teplova-task-manager.onrender.com']
 }));
 
 app.use(express.json()); // Parse JSON bodies
 
 // Connecting to MongoDB
 mongoose
-  .connect(process.env.ATLAS_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.ATLAS_URI)
   .then(() => {
     console.log('Connected to MongoDB');
   })

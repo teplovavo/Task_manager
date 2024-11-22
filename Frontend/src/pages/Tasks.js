@@ -1,30 +1,32 @@
+// src/pages/Tasks.js
 
-import React, { useState, useEffect } from 'react'; // Import React and hooks
-import axios from 'axios'; // Import axios for making HTTP requests
+import React, { useState, useEffect, useCallback } from 'react'; // Import useCallback
+import axios from 'axios'; // Import axios for HTTP requests
 import Task from '../components/Task'; // Import the Task component
 
 function Tasks() {
+  // State hooks for tasks and new task input
   const [tasks, setTasks] = useState([]); // List of tasks
   const [newTask, setNewTask] = useState(''); // New task description
   const [dueDate, setDueDate] = useState(''); // Due date
 
-  // Define backend URL
+  // Define the backend URL
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
 
-  // Fetch tasks when the component mounts
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
   // Fetch tasks from the server
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/tasks`);
       setTasks(response.data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
-  };
+  }, [backendUrl]); // Include backendUrl as a dependency
+
+  // useEffect to fetch tasks when the component mounts
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]); // Include fetchTasks as a dependency
 
   // Add a new task
   const addTask = async () => {

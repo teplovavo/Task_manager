@@ -1,39 +1,39 @@
 // src/pages/Login.js
 
-import React, { useState, useEffect } from 'react'; // Import React and hooks
-import axios from 'axios'; // Import axios for making HTTP requests
+import React, { useState, useEffect, useCallback } from 'react'; // Import useCallback
+import axios from 'axios'; // Import axios for HTTP requests
 
 function Login() {
-  // State variables for the login form inputs
+  // State variables for form inputs and messages
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  // State variables for error messages and greetings
   const [error, setError] = useState('');
   const [greeting, setGreeting] = useState(null);
-  // State variables for user list and editing functionality
+
+  // State variables for user management
   const [users, setUsers] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
   const [editUsername, setEditUsername] = useState('');
   const [editPassword, setEditPassword] = useState('');
 
-  // Define backend URL
+  // Define the backend URL
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
 
-  // Fetch users when the component mounts
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  // Function to fetch users from the backend
-  const fetchUsers = async () => {
+  // Fetch users from the backend
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/users`);
-      setUsers(response.data); // Update the users state
+      setUsers(response.data);
       console.log('Fetched users:', response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
-  };
+  }, [backendUrl]); // Include backendUrl as a dependency
+
+  // useEffect to fetch users when the component mounts
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]); // Include fetchUsers as a dependency
 
   // Function to validate user input
   const validateInput = () => {
