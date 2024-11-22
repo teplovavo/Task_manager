@@ -11,7 +11,7 @@ function Tasks() {
   const [dueDate, setDueDate] = useState(''); // Due date
 
   // Define the backend URL
-  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://teplova-task-manager.onrender.com';
 
   // Fetch tasks from the server
   const fetchTasks = useCallback(async () => {

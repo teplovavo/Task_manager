@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // Enable CORS with specified origins
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://teplova-task-manager.onrender.com']
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://teplova-task-manager.netlify.app/', 'https://teplova-task-manager.onrender.com']
 }));
 
 app.use(express.json()); // Parse JSON bodies
@@ -40,3 +40,5 @@ app.use('/api/users', userRoutes); // Use user routes
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
