@@ -1,70 +1,155 @@
-# Getting Started with Create React App
+# Full-Stack Task Manager Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Table of Contents
 
-## Available Scripts
+- [Description](#description)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Installation and Setup](#installation-and-setup)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Contributing](#contributing)
+- [Contact](#contact)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This is a full-stack web application that serves as a Task Manager with additional features like user authentication and news integration. The application allows users to:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Create, read, update, and delete tasks.
+- Manage user accounts with authentication.
+- View the latest news headlines.
+- Interact with a dynamic dashboard displaying tasks, users, and news widgets.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
 
-### `npm run build`
+- **User Authentication**: Sign up and log in with validation and error handling.
+- **Task Management**: Add, edit, complete, and delete tasks with due dates.
+- **Dashboard**: View widgets displaying task statistics, active users, and latest news.
+- **News Integration**: Fetch and display the latest news headlines from an external API.
+- **Responsive Design**: User-friendly interface that adapts to different screen sizes.
+- **Stylish UI**: Modern design with a dark theme and purple accents.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Frontend
 
-### `npm run eject`
+- **React**: JavaScript library for building user interfaces.
+- **Axios**: Promise-based HTTP client for making API requests.
+- **React Router**: Library for routing in React applications.
+- **CSS**: Styling the application.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Backend
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Node.js**: JavaScript runtime environment.
+- **Express.js**: Web framework for Node.js.
+- **MongoDB**: NoSQL database.
+- **Mongoose**: ODM for MongoDB.
+- **bcrypt**: Library for hashing passwords.
+- **Cors**: Middleware for handling Cross-Origin Resource Sharing.
+- **Dotenv**: Module for loading environment variables.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Prerequisites
 
-## Learn More
+- **Node.js**: Version 14 or higher.
+- **NPM**: Comes with Node.js installation.
+- **MongoDB Atlas Account**: For hosting the database (or a local MongoDB instance).
+- **News API Key**: Sign up at [NewsAPI.org](https://newsapi.org/) to obtain an API key.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Installation and Setup
 
-### Code Splitting
+### 1. Clone the Repository
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
 
-### Analyzing the Bundle Size
+### 2. Set Up the Backend
+cd backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+npm install
 
-### Making a Progressive Web App
+Create a .env file in the backend directory and add your MongoDB connection string:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+ATLAS_URI=your-mongodb-connection-string
 
-### Advanced Configuration
+Replace your-mongodb-connection-string with your actual MongoDB Atlas URI.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Start the backend server: node server.js
 
-### Deployment
+### 3. Set Up the Frontend
+cd frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+npm install
 
-### `npm run build` fails to minify
+Create a .env file in the frontend directory and add your News API key:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+REACT_APP_API_KEY=your-news-api-key
+
+Replace your-news-api-key with the API key obtained from NewsAPI.org.
+
+Start the frontend development server: npm start
+
+## The frontend server will run on http://localhost:3001 (or http://localhost:3000 if the backend is on a different port).
+
+### Usage
+Open your web browser and navigate to http://localhost:3000 (or the port where your frontend is running).
+
+Use the navigation menu to access different pages:
+
+Home: View the dashboard with widgets.
+
+Tasks: Manage your tasks.
+
+News: Read the latest news headlines.
+
+Login: Log in or create a new account.
+
+
+
+### API Endpoints
+- **Tasks**
+
+GET /api/tasks: Retrieve all tasks.
+
+POST /api/tasks: Create a new task.
+
+PUT /api/tasks/:id: Update a task by ID.
+
+DELETE /api/tasks/:id: Delete a task by ID.
+
+PATCH /api/tasks/:id/completed: Update task completion status.
+
+- **Users**
+
+GET /api/users: Retrieve all users.
+
+POST /api/users: Create a new user.
+
+PUT /api/users/:id: Update a user by ID.
+
+DELETE /api/users/:id: Delete a user by ID.
+
+- **Authentication**
+
+POST /api/auth/login: Authenticate a user.
+
+
+
+### Contact
+Veronika Teplova
+https://www.linkedin.com/in/veronika-teplova/
+
+Feel free to reach out for any questions or feedback!
+
+
