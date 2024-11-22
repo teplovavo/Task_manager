@@ -1,4 +1,4 @@
-// src/pages/News.js
+
 
 import React, { useState, useEffect } from 'react';
 

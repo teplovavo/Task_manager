@@ -15,7 +15,7 @@ app.use(cors({
  // origin: ['http://localhost:3000', 'http://localhost:3001', 'https://teplova-task-manager.netlify.app/', 'https://teplova-task-manager.onrender.com']
  origin: "*",
   credentials: true,
-  optionSuccessStatus: 200,
+  optionSuccessStatus: 200
 }));
 
 app.use(express.json()); // Parse JSON bodies
