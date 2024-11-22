@@ -23,30 +23,29 @@ function App() {
         <nav className="navigation">
           <NavLink
             to="/"
-            exact="true"
             onClick={() => setCurrentPage('Home')}
-            activeClassName="active-link"
+            className={({ isActive }) => (isActive ? 'active-link' : undefined)}
           >
             Home
           </NavLink>
           <NavLink
             to="/tasks"
             onClick={() => setCurrentPage('Tasks')}
-            activeClassName="active-link"
+            className={({ isActive }) => (isActive ? 'active-link' : undefined)}
           >
             Tasks
           </NavLink>
           <NavLink
             to="/news"
             onClick={() => setCurrentPage('News')}
-            activeClassName="active-link"
+            className={({ isActive }) => (isActive ? 'active-link' : undefined)}
           >
             News
           </NavLink>
           <NavLink
             to="/login"
             onClick={() => setCurrentPage('Login')}
-            activeClassName="active-link"
+            className={({ isActive }) => (isActive ? 'active-link' : undefined)}
           >
             Login
           </NavLink>
@@ -55,7 +54,7 @@ function App() {
         {/* Define Routes */}
         <div style={{ padding: '20px' }}>
           <Routes>
-            <Route path="/" element={<Home />} exact="true" />
+            <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/news" element={<News />} />
             <Route path="/login" element={<Login />} />
