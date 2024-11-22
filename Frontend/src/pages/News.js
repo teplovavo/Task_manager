@@ -8,18 +8,22 @@ function News() {
 
   // Fetch news articles from the external API
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchNews = useCallback(async () => {
       try {
         const apiKey = process.env.REACT_APP_API_KEY;
-        const response = await fetch(
+        const response = await axios.get(
           `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`
         );
-        const data = await response.json();
-        setArticles(data.articles);
+        console.log('News API Response:', response); // Log the full response
+        if (response.status === 200) {
+          setArticles(response.data.articles);
+        } else {
+          console.error(`Error: Received status code ${response.status}`);
+        }
       } catch (error) {
         console.error('Error fetching news:', error);
       }
-    };
+    }, []);
 
     fetchNews();
   }, []); // Empty dependency array means this runs once on mount

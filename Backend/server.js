@@ -45,3 +45,15 @@ app.listen(PORT, () => {
 });
 
 
+// API Endpoints
+app.get('/api/news', async (req, res) => {
+  try {
+    const apiKey = process.env.REACT_APP_API_KEY;
+    const response = await axios.get(
+      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch news' });
+  }
+});
