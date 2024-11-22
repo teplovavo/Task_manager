@@ -35,3 +35,10 @@ app.use('/api/users', userRoutes); // Use user routes
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Enable CORS to deploy
+const cors = require('cors');
+
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://teplova-task-manager.netlify.app']
+}));
