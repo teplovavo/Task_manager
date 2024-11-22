@@ -1,7 +1,7 @@
-// src/pages/Login.js
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
+import React, { useState, useEffect } from 'react'; // Import React and useState
+import axios from 'axios'; // Import axios for making HTTP requests
 
 function Login() {
   // State variables for the login form inputs

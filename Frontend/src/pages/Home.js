@@ -1,8 +1,10 @@
-// src/pages/Home.js
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
+import React, { useState, useEffect } from 'react'; // Import React and useState
+import axios from 'axios'; // Import axios for making HTTP requests
+
+
+// function to render the home page
 function Home() {
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
@@ -48,7 +50,7 @@ function Home() {
     }
   };
 
-  // Separate tasks into completed and in-progress
+  // Separate tasks into completed and in progress
   const completedTasks = tasks.filter((task) => task.completed);
   const inProgressTasks = tasks.filter((task) => !task.completed);
 

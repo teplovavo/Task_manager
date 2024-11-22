@@ -1,7 +1,9 @@
-// src/components/Task.js
 
-import React, { useState } from 'react';
 
+import React, { useState } from 'react'; // Import React and useState
+
+
+// Task component
 function Task({ task, toggleCompletion, deleteTask, editTask }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editDescription, setEditDescription] = useState(task.description);

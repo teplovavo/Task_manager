@@ -1,7 +1,9 @@
-// src/pages/News.js
 
-import React, { useState, useEffect } from 'react';
 
+import React, { useState, useEffect } from 'react'; // Import React and useState
+
+
+// Function to render the news page
 function News() {
   const [articles, setArticles] = useState([]);
 
@@ -9,7 +11,7 @@ function News() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const apiKey = process.env.REACT_APP_API_KEY;
+        const apiKey = process.env.REACT_APP_API_KEY; // Get API key from environment variable
         const response = await fetch(
           `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`
         );

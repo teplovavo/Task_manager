@@ -1,18 +1,18 @@
-/* src/App.css */
+
 
 /* Global Styles */
 /* Reset default margins and set base font */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #121212; /* Black background */
-  color: #ffffff; /* White text */
+  background-color: #121212;
+  color: #ffffff; 
 }
 
 /* Container Styles */
 /* Main container used across pages */
 .container {
-  background-color: #1E1E1E; /* Dark gray */
+  background-color: #1E1E1E; 
   padding: 20px;
   border-radius: 8px; /* Rounded corners */
   margin-bottom: 20px;
@@ -238,5 +238,5 @@ a:hover {
 }
 
 .add-task-section input[type="date"] {
-  width: 200px; /* Set a fixed width */
+  width: 200px; /* fixed width */
 }
