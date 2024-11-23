@@ -1,9 +1,10 @@
-// backend/server.js
+
 
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Import cors once
+const axios = require('axios'); // Import axios for making HTTP requests
 const app = express(); // Create Express app
 
 const PORT = process.env.PORT || 3000;
@@ -12,8 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // Enable CORS with specified origins
 app.use(cors({
- // origin: ['http://localhost:3000', 'http://localhost:3001', 'https://teplova-task-manager.netlify.app/', 'https://teplova-task-manager.onrender.com']
- origin: "*",
+  origin: "*",
   credentials: true,
   optionSuccessStatus: 200
 }));
@@ -39,21 +39,21 @@ app.use('/api/tasks', taskRoutes); // Use task routes
 app.use('/api/auth', authRoutes); // Use auth routes
 app.use('/api/users', userRoutes); // Use user routes
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-
-// API Endpoints
+// API Endpoint for News
 app.get('/api/news', async (req, res) => {
   try {
-    const apiKey = process.env.REACT_APP_API_KEY;
+    const apiKey = process.env.NEWS_API_KEY; // Use the correct environment variable
     const response = await axios.get(
       `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`
     );
-    res.json(response.data);
+    res.json(response.data); // Send the news data back to the frontend
   } catch (error) {
+    console.error('Error fetching news:', error.message);
     res.status(500).json({ error: 'Failed to fetch news' });
   }
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

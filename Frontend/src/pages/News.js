@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
 
@@ -7,15 +6,14 @@ function News() {
   // State hook for articles
   const [articles, setArticles] = useState([]);
 
-  // Fetch news articles from the external API
+  // Define backend URL
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
+
+  // Fetch news articles from the backend API
   useEffect(() => {
-    // Define the fetchNews function inside useEffect
     const fetchNews = async () => {
       try {
-        const apiKey = process.env.REACT_APP_API_KEY;
-        const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`
-        );
+        const response = await axios.get(`${backendUrl}/api/news`);
         console.log('News API Response:', response); // Log the full response
         if (response.status === 200) {
           setArticles(response.data.articles);
@@ -23,12 +21,12 @@ function News() {
           console.error(`Error: Received status code ${response.status}`);
         }
       } catch (error) {
-        console.error('Error fetching news:', error);
+        console.error('Error fetching news:', error.message);
       }
     };
 
     fetchNews(); // Call the fetchNews function
-  }, []); // Empty dependency array means this runs once on mount
+  }, [backendUrl]); // Include backendUrl as a dependency
 
   return (
     <div className="news-page">
