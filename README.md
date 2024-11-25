@@ -1,5 +1,6 @@
 # https://teplova-task-manager.netlify.app/
 # Full-Stack Task Manager Application
+# Jira https://teplovavo.atlassian.net/jira/software/projects/KAN/boards/1?atlOrigin=eyJpIjoiOGY4OTVhM2IzOGY1NDFlMGE3YzVhNzg4M2Q2MmQ4ZWEiLCJwIjoiaiJ9
 
 ## Table of Contents
 
